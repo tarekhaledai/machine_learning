@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: volume-debugger
+spec:
+  volumes:
+    - name: nfs-pv
+      persistentVolumeClaim:
+       claimName: nfs-pvc
+  containers:
+    - name: debugger
+      image: busybox
+      command: ['sleep', '3600']
+      volumeMounts:
+        - mountPath: "app/data/"
+          name: nfs-pv

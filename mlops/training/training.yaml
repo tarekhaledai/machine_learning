@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: model-ota-yb
+spec:
+  schedule: "1 6 * * */1"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: model-ota-yb
+            image: rg.fr-par.scw.cloud/namespace-ota/docker-training-yb:0.0.10
+            imagePullPolicy: Always
+            volumeMounts:
+            - name: nfs-pv
+              mountPath: "app/data/"
+          restartPolicy: OnFailure
+          volumes:
+          - name: nfs-pv
+            persistentVolumeClaim:
+              claimName: nfs-pvc
+
